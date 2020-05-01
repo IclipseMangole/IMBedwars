@@ -1,0 +1,6 @@
+main: de.MangoleHD.IMBedwars.Main
+name: IMBedwars
+author: MangoleHD
+version: 1.0
+api-version: 1.15
+depend: [IMAPI]
