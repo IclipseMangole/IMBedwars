@@ -25,8 +25,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import static de.MangoleHD.IMBedwars.Data.spawn;
-import static de.MangoleHD.IMBedwars.Data.tablist;
+import static de.MangoleHD.IMBedwars.Data.*;
 
 public class Lobby implements Listener {
 
@@ -54,12 +53,12 @@ public class Lobby implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (Data.state == GameState.Lobby) {
-                if(event.getCause().equals(EntityDamageEvent.DamageCause.VOID)){
+                if (event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
                     event.setDamage(0);
                     player.setHealth(20);
                     player.teleport(spawn);
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 1,1);
-                }else{
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 1, 1);
+                } else {
                     event.setCancelled(true);
                 }
             }
@@ -130,72 +129,153 @@ public class Lobby implements Listener {
     }
 
     public void openTeamMenu(Player player) {
-        PopupMenu Teams = new PopupMenu("Teams", 3);
+        PopupMenu Teams = new PopupMenu("Teams", 5);
 
         MenuItem tnt = new MenuItem(new ItemStack(Material.TNT)) {
             @Override
             public void onClick(Player player) {
                 Location loc = player.getLocation();
-                loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 3);
+                loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
             }
         };
-        MenuItem red_bed = new MenuItem(new ItemStack(Material.RED_BED)) {
-            @Override
-            public void onClick(Player player) {
-                User user = User.getUser(player);
-                for (Team team : Data.teams) {
-                    if (team.getMaterial().equals(Material.RED_BED)) {
-                        team.addUser(user);
-                    }
-                }
-            }
-        };
-        MenuItem blue_bed = new MenuItem(new ItemStack(Material.BLUE_BED)) {
-            @Override
-            public void onClick(Player player) {
-                User user = User.getUser(player);
-                for (Team team : Data.teams) {
-                    if (team.getMaterial().equals(Material.BLUE_BED)) {
-                        team.addUser(user);
-                    }
-                }
-            }
-        };
-        MenuItem green_bed = new MenuItem(new ItemStack(Material.GREEN_BED)) {
-            @Override
-            public void onClick(Player player) {
-                User user = User.getUser(player);
-                for (Team team : Data.teams) {
-                    if (team.getMaterial().equals(Material.GREEN_BED)) {
-                        team.addUser(user);
-                    }
-                }
-            }
-        };
-        MenuItem yellow_bed = new MenuItem(new ItemStack(Material.YELLOW_BED)) {
-            @Override
-            public void onClick(Player player) {
-                User user = User.getUser(player);
-                for (Team team : Data.teams) {
-                    if (team.getMaterial().equals(Material.YELLOW_BED)) {
-                        team.addUser(user);
-                    }
-                }
-            }
-        };
+        //4 TEAMS
+        if (teams.size() == 4) {
 
-        Teams.addMenuItem(red_bed, 1, 1);
-        Teams.addMenuItem(blue_bed, 1, 3);
-        Teams.addMenuItem(green_bed, 1, 5);
-        Teams.addMenuItem(yellow_bed, 1, 7);
-        for (int i = 0; i < 8; i++) {
-            Teams.addMenuItem(tnt, i);
-        }
-        for (int i = 11; i < 17; i = i + 2) {
-            Teams.addMenuItem(tnt, i);
-        }
-        for (int i = 18; i < 26; i++) {
-            Teams.addMenuItem(tnt, i);
+            final int[] i = {19};
+            teams.forEach(team -> {
+
+                ItemStack teamItem = team.getTeamItem(player);
+                Teams.addMenuItem(new MenuItem(teamItem) {
+                    @Override
+                    public void onClick(Player player) {
+                        User user = User.getUser(player);
+                        if(user.getTeam() != null) {
+                            if (team.getUsers().contains(user)) {
+                                dsp.send(player, "team.join.already");
+                            } else if (team.getUsers().size() >= teamsize) {
+                                dsp.send(player, "team.join.full");
+                            } else {
+                                dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                                team.addUser(user);
+                                Teams.closeMenu(player);
+                                Teams.updateMenu();
+                                player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
+                            }
+                        }else{
+                            dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                            team.addUser(user);
+                            Teams.closeMenu(player);
+                            Teams.updateMenu();
+                            player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
+                        }
+                    }
+                }, i[0]);
+
+                i[0] += 2;
+            });
+
+            Teams.fill(Material.TNT);
+
+            //8 TEAMS
+        } else if (teams.size() == 8) {
+
+            final int[] i = {8};
+
+            teams.forEach(team -> {
+
+                switch (i[0]) {
+                    case 16:
+                        i[0] += 8;
+                        break;
+
+                    default:
+                        i[0] += 2;
+                        break;
+                }
+                    ItemStack teamItem = team.getTeamItem(player);
+                    Teams.addMenuItem(new MenuItem(teamItem) {
+                        @Override
+                        public void onClick(Player player) {
+                            User user = User.getUser(player);
+                            if (user.getTeam() != null) {
+                                if (team.getUsers().contains(user)) {
+                                    dsp.send(player, "team.join.already");
+                                } else if (team.getUsers().size() >= teamsize) {
+                                    dsp.send(player, "team.join.full");
+                                } else {
+                                    dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                                    team.addUser(user);
+                                    Teams.closeMenu(player);
+                                    Teams.updateMenu();
+                                    player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
+                                }
+                            } else {
+                                dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                                team.addUser(user);
+                                Teams.closeMenu(player);
+                                Teams.updateMenu();
+                                player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
+                            }
+                        }
+                    }, i[0]);
+
+            });
+
+            Teams.fill(Material.TNT);
+
+            //16 TEAMS
+        } else if (teams.size() == 16) {
+
+            final int[] i = {9};
+
+            teams.forEach(team -> {
+
+                switch (i[0]) {
+                    case 16:
+
+                    case 25:
+                        i[0] += 3;
+                        break;
+
+                    case 19:
+                        i[0] += 6;
+                        break;
+
+                    default:
+                        i[0]++;
+                        break;
+                }
+                ItemStack teamItem = team.getTeamItem(player);
+                Teams.addMenuItem(new MenuItem(teamItem) {
+                    @Override
+                    public void onClick(Player player) {
+                        User user = User.getUser(player);
+                        if (user.getTeam() != null) {
+                            if (team.getUsers().contains(user)) {
+                                dsp.send(player, "team.join.already");
+                            } else if (team.getUsers().size() >= teamsize) {
+                                dsp.send(player, "team.join.full");
+                            } else {
+                                dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                                team.addUser(user);
+                                Teams.closeMenu(player);
+                                Teams.updateMenu();
+                                player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
+                            }
+                        } else {
+                            dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                            team.addUser(user);
+                            Teams.closeMenu(player);
+                            Teams.updateMenu();
+                            player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
+                        }
+                    }
+                }, i[0]);
+
+            });
+
+            Teams.fill(Material.TNT);
+
         }
 
         Teams.openMenu(player);

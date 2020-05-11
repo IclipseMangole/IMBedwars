@@ -9,6 +9,7 @@ import de.MangoleHD.IMBedwars.Functions.GameStates.Lobby;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Running;
 import de.MangoleHD.IMBedwars.Functions.LastDamage;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.UserStats;
+import de.MangoleHD.IMBedwars.Functions.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,8 +24,7 @@ import java.util.ResourceBundle;
 
 import static de.Iclipse.IMAPI.IMAPI.copyFilesInDirectory;
 import static de.Iclipse.IMAPI.IMAPI.deleteFile;
-import static de.MangoleHD.IMBedwars.Data.langDE;
-import static de.MangoleHD.IMBedwars.Data.langEN;
+import static de.MangoleHD.IMBedwars.Data.*;
 import static de.MangoleHD.IMBedwars.Database.BedwarsGames.createBedwarsGamesTable;
 import static de.MangoleHD.IMBedwars.Database.BedwarsStats.createBedwarsStatsTable;
 
@@ -46,11 +46,16 @@ public class Main extends JavaPlugin {
         loadResourceBundles();
         Data.state = GameState.Lobby;
         Data.spawn = new Location(Bukkit.getWorld("world"),0.5,51,0.5);
+        Data.scheduler = new Scheduler();
+        scheduler.setTask();
+        scheduler.setAsynctask();
     }
 
     @Override
     public void onDisable(){
         super.onDisable();
+        scheduler.stopTask();
+        scheduler.stopAsyncTask();
     }
 
     public void registerListener(){

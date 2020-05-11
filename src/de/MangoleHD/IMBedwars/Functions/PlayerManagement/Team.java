@@ -145,4 +145,15 @@ public class Team {
             return null;
         }
     }
+
+    public boolean isBedAlive(){
+        final boolean[] alive = {false};
+       beds.forEach(bed -> {
+           if(bed.getBedcolor().equals(this.getTeamColor())){
+                 alive[0] = true;
+           }
+       });
+
+        return alive[0];
+    }
 }
