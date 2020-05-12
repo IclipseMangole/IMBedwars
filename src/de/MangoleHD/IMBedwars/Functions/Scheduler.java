@@ -9,6 +9,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Random;
 
+
+
 public class Scheduler {
 
     BukkitTask task;
@@ -48,6 +50,7 @@ public class Scheduler {
                             user.getPlayer().getInventory().setItem(0, Data.teams.get(new Random().nextInt(Data.teams.size())).getTeamItem(user.getPlayer()));
                         }
                     });
+                    Coutdown.countdown(Data.countdown);
 
                 }else if(Data.state == GameState.Finish){
 
