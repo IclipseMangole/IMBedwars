@@ -26,7 +26,7 @@ public class Scheduler {
 
                 }
             }
-        }, 20, 20);
+        }, 25, 20);
     }
 
     public void stopTask(){

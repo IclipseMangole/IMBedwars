@@ -9,6 +9,7 @@ import de.MangoleHD.IMBedwars.Functions.LastDamage;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.Team;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.User;
 import de.MangoleHD.IMBedwars.Functions.Scheduler;
+import de.MangoleHD.IMBedwars.Functions.Shop.Shop;
 import de.MangoleHD.IMBedwars.Functions.Spawner;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,6 +42,7 @@ public class Data {
     public static ArrayList<Bed> beds = new ArrayList<>();
     public static ArrayList<Spawner> spawners = new ArrayList<>();
     public static ArrayList<Block> placedBlocks = new ArrayList<>();
+    public static ArrayList<Shop> shops = new ArrayList<>();
     public static HashMap<Player, LastDamage.LastDamager> lastDamager = new HashMap<>();
     public static HashMap<Team, Location> respawns;
     public static Location spawn;

@@ -22,6 +22,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -35,6 +36,7 @@ public class Lobby implements Listener {
             Player player = event.getPlayer();
             LobbyInventory(player);
             tablist.setTablist(player);
+            tablist.setPlayer(player);
             if (!UserSettings.getBoolean(UUIDFetcher.getUUID(player.getName()), "vanish")) {
                 event.setJoinMessage(null);
                 Bukkit.getOnlinePlayers().forEach(entry -> {
@@ -45,6 +47,23 @@ public class Lobby implements Listener {
                 Data.dsp.send(Bukkit.getConsoleSender(), "lobby.join", player.getDisplayName());
                 new User(player);
             }
+            player.teleport(spawn);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        User user = User.getUser(player);
+        if (state != GameState.Running) {
+            if (user.isInATeam()) {
+                user.getTeam().removeUser(user);
+            }
+            users.remove(user);
+            event.setQuitMessage(null);
+            Bukkit.getOnlinePlayers().forEach(entry -> {
+                dsp.send(entry, "lobby.quit", player.getDisplayName());
+            });
         }
     }
 
@@ -155,14 +174,14 @@ public class Lobby implements Listener {
                             } else if (team.getUsers().size() >= teamsize) {
                                 dsp.send(player, "team.join.full");
                             } else {
-                                dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                                dsp.send(player, "team.join", team.getColor() + "Team " + dsp.get("color." + team.getColor().asBungee().getName(), player));
                                 team.addUser(user);
                                 Teams.closeMenu(player);
                                 Teams.updateMenu();
                                 player.getInventory().setItem(0, user.getTeam().getTeamItem(player));
                             }
                         }else{
-                            dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                            dsp.send(player, "team.join", team.getColor() + "Team " + dsp.get("color." + team.getColor().asBungee().getName(), player));
                             team.addUser(user);
                             Teams.closeMenu(player);
                             Teams.updateMenu();
@@ -256,7 +275,7 @@ public class Lobby implements Listener {
                             } else if (team.getUsers().size() >= teamsize) {
                                 dsp.send(player, "team.join.full");
                             } else {
-                                dsp.send(player, "team.join", "" + team.getTeam().getDisplayName());
+                                dsp.send(player, "team.join", "" + team.getTeam().getColor());
                                 team.addUser(user);
                                 Teams.closeMenu(player);
                                 Teams.updateMenu();

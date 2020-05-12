@@ -60,7 +60,7 @@ public class UserStats implements Listener {
             if(!event.getBlock().getType().toString().endsWith("BED")) {
                 if (Data.placedBlocks.contains(event.getBlock())) {
                     User user = User.getUser(event.getPlayer());
-                    user.setBlocksDestroyed(user.getBedsDestroyed() + 1);
+                    user.setBlocksDestroyed(user.getBlocksDestroyed() + 1);
                     Data.placedBlocks.remove(event.getBlock());
                 } else {
                     event.setCancelled(true);

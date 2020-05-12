@@ -88,7 +88,6 @@ public class Team {
         });
         team.addEntry(u.getPlayer().getName());
         tablist.updatePlayer(u.getPlayer());
-        dsp.send(u.getPlayer(), "team.changed", this.getColor() + "Team " + dsp.get("color." + this.getColor().asBungee().getName(), u.getPlayer()));
     }
 
     public boolean isMember(User user){

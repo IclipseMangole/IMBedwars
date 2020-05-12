@@ -1,5 +1,6 @@
 package de.MangoleHD.IMBedwars.Functions;
 
+import de.MangoleHD.IMBedwars.Data;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -15,6 +16,11 @@ public class Spawner {
         this.material = material;
         this.location = location;
         this.spawnsPerMinute = spawnsPerMinute;
+        Data.spawners.add(this);
+    }
+
+    public Spawner getSpawner(){
+        return this;
     }
 
     public void setSpawner(){

@@ -1,5 +1,7 @@
 package de.MangoleHD.IMBedwars;
 
+import de.Iclipse.IMAPI.Database.Server;
+import de.Iclipse.IMAPI.Functions.Servers.State;
 import de.Iclipse.IMAPI.IMAPI;
 import de.Iclipse.IMAPI.Util.Dispatching.Dispatcher;
 import de.MangoleHD.IMBedwars.Functions.Bed;
@@ -7,7 +9,9 @@ import de.MangoleHD.IMBedwars.Functions.GameStates.Finish;
 import de.MangoleHD.IMBedwars.Functions.GameStates.GameState;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Lobby;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Running;
+import de.MangoleHD.IMBedwars.Functions.HUD.Tablist;
 import de.MangoleHD.IMBedwars.Functions.LastDamage;
+import de.MangoleHD.IMBedwars.Functions.PlayerManagement.TeamManager;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.UserStats;
 import de.MangoleHD.IMBedwars.Functions.Scheduler;
 import org.bukkit.Bukkit;
@@ -22,8 +26,7 @@ import java.util.HashMap;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import static de.Iclipse.IMAPI.IMAPI.copyFilesInDirectory;
-import static de.Iclipse.IMAPI.IMAPI.deleteFile;
+import static de.Iclipse.IMAPI.IMAPI.*;
 import static de.MangoleHD.IMBedwars.Data.*;
 import static de.MangoleHD.IMBedwars.Database.BedwarsGames.createBedwarsGamesTable;
 import static de.MangoleHD.IMBedwars.Database.BedwarsStats.createBedwarsStatsTable;
@@ -45,10 +48,13 @@ public class Main extends JavaPlugin {
         createTables();
         loadResourceBundles();
         Data.state = GameState.Lobby;
-        Data.spawn = new Location(Bukkit.getWorld("world"),0.5,51,0.5);
+        tablist = new Tablist();
+        Data.spawn = new Location(Bukkit.getWorld("world"),0.5,59,-0.5);
         Data.scheduler = new Scheduler();
         scheduler.setTask();
         scheduler.setAsynctask();
+        TeamManager.createTeams();
+        Server.setState(getServerName(), State.Lobby);
     }
 
     @Override

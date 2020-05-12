@@ -1,5 +1,6 @@
 package de.MangoleHD.IMBedwars.Functions;
 
+import de.MangoleHD.IMBedwars.Data;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.Team;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -23,6 +24,7 @@ public class Bed {
         this.bedfoot = bedfoot;
         this.bedhead = bedhead;
         this.bedcolor = bedteam.getTeamColor();
+        Data.beds.add(this);
     }
 
     public Color getBedcolor(){
