@@ -3,6 +3,7 @@ package de.MangoleHD.IMBedwars.Functions.PlayerManagement;
 import de.MangoleHD.IMBedwars.Data;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class Team {
     private ArrayList<User> users;
     private ChatColor color;
     private Material material;
+    private Location respawn;
 
     public Team(ChatColor color, Material material){
         this.id = Data.teams.size();
@@ -29,6 +31,7 @@ public class Team {
         team.setAllowFriendlyFire(false);
         this.users = new ArrayList<>();
         this.material = material;
+        this.respawn = null;
         Data.teams.add(this);
     }
 
@@ -72,6 +75,14 @@ public class Team {
 
     public void setUsers(ArrayList<User> users){
         this.users = users;
+    }
+
+    public Location getRespawn() {
+        return respawn;
+    }
+
+    public void setRespawn(Location respawn) {
+        this.respawn = respawn;
     }
 
     public void removeUser(User u) {

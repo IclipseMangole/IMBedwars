@@ -1,4 +1,4 @@
-package de.MangoleHD.IMBedwars.Functions.Shop;
+package de.MangoleHD.IMBedwars.Functions.Shop.Menus;
 
 import de.Iclipse.IMAPI.Util.menu.MenuItem;
 import de.Iclipse.IMAPI.Util.menu.PopupMenu;
@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.awt.*;
 import java.util.Collections;
 
 import static de.MangoleHD.IMBedwars.Data.dsp;
@@ -35,9 +34,9 @@ public class ShopMenu implements Listener {
         }
     }
 
-    public void openShopMenu(Player player) {
+    public static void openShopMenu(Player player) {
         //Shop
-        PopupMenu ShopMenu = new PopupMenu(dsp.get("shopmenu.title", player), 5);
+        PopupMenu ShopMenu = new PopupMenu(dsp.get("shopmenu.title", player), 1);
 
         //Blöcke
         ItemStack block = new ItemStack(Material.SANDSTONE);
@@ -48,7 +47,7 @@ public class ShopMenu implements Listener {
         MenuItem blockItem = new MenuItem(block) {
             @Override
             public void onClick(Player player) {
-                BlockMenu.openBlockMenu(player);
+                BlockMenu.openBlockMenu(player, ShopMenu);
             }
         };
 
@@ -61,7 +60,7 @@ public class ShopMenu implements Listener {
         MenuItem foodItem = new MenuItem(food) {
             @Override
             public void onClick(Player player) {
-                FoodMenu.openFoodMenu(player);
+                FoodMenu.openFoodMenu(player,ShopMenu);
             }
         };
 
@@ -75,7 +74,7 @@ public class ShopMenu implements Listener {
         MenuItem swordItem = new MenuItem(sword) {
             @Override
             public void onClick(Player player) {
-                SwordMenu.openSwordMenu(player);
+                SwordMenu.openSwordMenu(player,ShopMenu);
             }
         };
 
@@ -89,7 +88,7 @@ public class ShopMenu implements Listener {
         MenuItem pickaxeItem = new MenuItem(pickaxe) {
             @Override
             public void onClick(Player player) {
-                PickaxeMenu.openPickaxeMenu(player);
+                PickaxeMenu.openPickaxeMenu(player,ShopMenu);
             }
         };
 
@@ -103,7 +102,7 @@ public class ShopMenu implements Listener {
         MenuItem armorItem = new MenuItem(armor) {
             @Override
             public void onClick(Player player) {
-                ArmorMenu.openArmorMenu(player);
+                ArmorMenu.openArmorMenu(player,ShopMenu);
             }
         };
 
@@ -113,12 +112,12 @@ public class ShopMenu implements Listener {
         bowMeta.setDisplayName(dsp.get("bows.name", player));
         bowMeta.setLore(Collections.singletonList(dsp.get("bows.lore", player)));
         bowMeta.addEnchant(Enchantment.DURABILITY, 1, false);
-        bowMeta.addEnchant(Enchantment.ARROW_INFINITE,1,false);
+        bowMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, false);
         bow.setItemMeta(bowMeta);
         MenuItem bowItem = new MenuItem(bow) {
             @Override
             public void onClick(Player player) {
-                BowMenu.openBowMenu(player);
+                BowMenu.openBowMenu(player,ShopMenu);
             }
         };
 
@@ -132,8 +131,18 @@ public class ShopMenu implements Listener {
         MenuItem specialItem = new MenuItem(special) {
             @Override
             public void onClick(Player player) {
-                SpecialMenu.openSpecialMenu(player);
+                SpecialMenu.openSpecialMenu(player,ShopMenu);
             }
         };
+
+        ShopMenu.addMenuItem(blockItem, 1);
+        ShopMenu.addMenuItem(foodItem, 2);
+        ShopMenu.addMenuItem(swordItem, 3);
+        ShopMenu.addMenuItem(pickaxeItem, 4);
+        ShopMenu.addMenuItem(armorItem, 5);
+        ShopMenu.addMenuItem(bowItem, 6);
+        ShopMenu.addMenuItem(specialItem, 7);
+
+        ShopMenu.openMenu(player);
     }
 }

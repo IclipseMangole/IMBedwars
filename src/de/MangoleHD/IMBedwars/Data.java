@@ -2,6 +2,9 @@ package de.MangoleHD.IMBedwars;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 import de.Iclipse.IMAPI.Util.Dispatching.Dispatcher;
+import de.Iclipse.IMAPI.Util.menu.PopupMenu;
+import de.MangoleHD.IMBedwars.Database.Config;
+import de.MangoleHD.IMBedwars.Database.MapConfig;
 import de.MangoleHD.IMBedwars.Functions.Bed;
 import de.MangoleHD.IMBedwars.Functions.GameStates.GameState;
 import de.MangoleHD.IMBedwars.Functions.HUD.Tablist;
@@ -15,9 +18,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.Hash;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,7 +40,15 @@ public class Data {
     public static Tablist tablist;
     public static int lobbycountdown = 100;
     public static int countdown = lobbycountdown;
-    public static int teamsize = 1;
+    public static int teamsize;
+    public static int teamnumber;
+    public static int bronzenumber;
+    public static int silvernumber;
+    public static int goldnumber;
+    public static int perMinuteBronze;
+    public static int perMinuteSilver;
+    public static int perMinuteGold;
+    public static EntityType shopEntityType;
     public static int minplayers = teamsize + 1;
     public static Date start;
     public static ArrayList<Team> teams = new ArrayList<>();
@@ -43,8 +57,11 @@ public class Data {
     public static ArrayList<Spawner> spawners = new ArrayList<>();
     public static ArrayList<Block> placedBlocks = new ArrayList<>();
     public static ArrayList<Shop> shops = new ArrayList<>();
+    public static ArrayList<String> popupmenus = new ArrayList<>();
     public static HashMap<Player, LastDamage.LastDamager> lastDamager = new HashMap<>();
-    public static HashMap<Team, Location> respawns;
     public static Location spawn;
+    public static MapConfig mapConfig;
+    public static Config config;
+    public static HashMap<Team, Location> respawns = new HashMap<>();
 
 }

@@ -4,7 +4,8 @@ import de.Iclipse.IMAPI.Database.Server;
 import de.Iclipse.IMAPI.Functions.Servers.State;
 import de.Iclipse.IMAPI.IMAPI;
 import de.Iclipse.IMAPI.Util.Dispatching.Dispatcher;
-import de.MangoleHD.IMBedwars.Functions.Bed;
+import de.MangoleHD.IMBedwars.Database.Config;
+import de.MangoleHD.IMBedwars.Database.MapConfig;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Finish;
 import de.MangoleHD.IMBedwars.Functions.GameStates.GameState;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Lobby;
@@ -14,6 +15,7 @@ import de.MangoleHD.IMBedwars.Functions.LastDamage;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.TeamManager;
 import de.MangoleHD.IMBedwars.Functions.PlayerManagement.UserStats;
 import de.MangoleHD.IMBedwars.Functions.Scheduler;
+import de.MangoleHD.IMBedwars.Functions.Shop.ShopItemList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,9 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static de.Iclipse.IMAPI.IMAPI.*;
 import static de.MangoleHD.IMBedwars.Data.*;
@@ -37,24 +37,28 @@ public class Main extends JavaPlugin {
     public void onLoad(){
         super.onLoad();
         Data.instance = this;
+        config = new Config();
         loadLobby();
     }
 
     @Override
     public void onEnable(){
         super.onEnable();
+        mapConfig = new MapConfig();
         registerListener();
         registerCommands();
         createTables();
         loadResourceBundles();
         Data.state = GameState.Lobby;
         tablist = new Tablist();
-        Data.spawn = new Location(Bukkit.getWorld("world"),0.5,59,-0.5);
         Data.scheduler = new Scheduler();
         scheduler.setTask();
         scheduler.setAsynctask();
         TeamManager.createTeams();
         Server.setState(getServerName(), State.Lobby);
+        ShopItemList.createShopItemList();
+        config.loadConfigLocation();
+        loadMap();
     }
 
     @Override
@@ -97,6 +101,34 @@ public class Main extends JavaPlugin {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void loadMap(){
+        if (new File(Bukkit.getWorldContainer().getAbsolutePath() + "/BedwarsMap").exists()) {
+            deleteFile(new File(Bukkit.getWorldContainer().getAbsolutePath() + "/BedwarsMap"));
+        }
+
+        File bedwarsMaps = new File(instance.getDataFolder().getAbsoluteFile().getParentFile().getAbsoluteFile().getParentFile().getAbsolutePath() + "Worlds/BedwarsMaps");
+        File[] maps;
+        maps = bedwarsMaps.listFiles();
+        Random random = new Random();
+        int i = random.nextInt(maps.length - 1);
+
+        if(maps[i] != null) {
+            File mapFile = maps[i];
+
+            File mapRegionFrom = new File(mapFile.getAbsolutePath() + "/region");
+            File to = new File(Data.instance.getDataFolder().getAbsoluteFile().getParentFile().getParentFile().getAbsolutePath() + "/BedwarsMap/region");
+            if (to.exists()) {
+                to.delete();
+            }
+            try {
+                copyFilesInDirectory(mapRegionFrom, to);
+                Files.copy(new File(mapFile.toPath() + "/level.dat").toPath(), new File(Data.instance.getDataFolder().getAbsoluteFile().getParentFile().getParentFile().getAbsolutePath() + "/BedwarsMap/level.dat").toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

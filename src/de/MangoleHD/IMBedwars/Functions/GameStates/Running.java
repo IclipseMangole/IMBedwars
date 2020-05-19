@@ -20,6 +20,7 @@ public class Running implements Listener {
         User user = User.getUser(player);
         Location respawn = Data.respawns.get(user.getTeam());
         player.setBedSpawnLocation(respawn);
+        player.teleport(respawn);
     }
 
     public void setSpectator(Player player){
@@ -31,6 +32,7 @@ public class Running implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event){
         User user = User.getUser(event.getEntity());
         Team team = user.getTeam();
+        event.setDeathMessage(null);
         for(Bed bed : Data.beds){
             if(bed.getBedcolor().equals(team.getTeamColor())){
                 respawnUser(event.getEntity());

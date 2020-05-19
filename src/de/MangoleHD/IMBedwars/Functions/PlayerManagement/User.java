@@ -6,6 +6,7 @@ import de.MangoleHD.IMBedwars.Database.BedwarsStats;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
 
@@ -17,6 +18,9 @@ public class User {
     private int bedsDestroyed;
     private int blocksPlaced;
     private int blocksDestroyed;
+    private int spentBronze;
+    private int spentIron;
+    private int spentGold;
     private long finished;
 
     public User(Player player){
@@ -28,6 +32,9 @@ public class User {
         bedsDestroyed = 0;
         blocksPlaced = 0;
         blocksDestroyed = 0;
+        spentBronze = 0;
+        spentIron = 0;
+        spentGold = 0;
         finished = 0;
         Data.users.add(this);
     }
@@ -73,6 +80,18 @@ public class User {
         return blocksDestroyed;
     }
 
+    public int getSpentBronze() {
+        return spentBronze;
+    }
+
+    public int getSpentIron() {
+        return spentIron;
+    }
+
+    public int getSpentGold() {
+        return spentGold;
+    }
+
     public long getFinished(){
         return finished;
     }
@@ -105,6 +124,18 @@ public class User {
         this.blocksDestroyed = blocksDestroyed;
     }
 
+    public void setSpentBronze(int spentBronze) {
+        this.spentBronze = spentBronze;
+    }
+
+    public void setSpentIron(int spentIron) {
+        this.spentIron = spentIron;
+    }
+
+    public void setSpentGold(int spentGold) {
+        this.spentGold = spentGold;
+    }
+
     public void setFinished(long finished){
         this.finished = finished;
     }
@@ -114,7 +145,7 @@ public class User {
     }
 
     public Team getTeam(){
-        ArrayList<Team> teams = Data.teams;
+        ArrayList<Team> teams =  Data.teams;
         for(int i = 0; i < teams.size(); i++){
             Team team = teams.get(i);
             if(team.isMember(this)){
@@ -145,6 +176,6 @@ public class User {
     }
 
     public void saveStats(int gameID){
-        BedwarsStats.createStats(UUIDFetcher.getUUID(player.getName()), gameID, kills, deaths, damageDealt, damageReceived, bedsDestroyed, blocksPlaced, blocksDestroyed, finished);
+        BedwarsStats.createStats(UUIDFetcher.getUUID(player.getName()), gameID, kills, deaths, damageDealt, damageReceived, bedsDestroyed, blocksPlaced, blocksDestroyed, spentBronze, spentIron, spentGold, finished);
     }
 }

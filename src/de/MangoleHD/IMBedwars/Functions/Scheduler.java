@@ -3,7 +3,6 @@ package de.MangoleHD.IMBedwars.Functions;
 import de.MangoleHD.IMBedwars.Data;
 import de.MangoleHD.IMBedwars.Functions.GameStates.GameState;
 import de.MangoleHD.IMBedwars.Functions.HUD.Scoreboard;
-import de.MangoleHD.IMBedwars.Functions.HUD.Tablist;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -50,7 +49,7 @@ public class Scheduler {
                             user.getPlayer().getInventory().setItem(0, Data.teams.get(new Random().nextInt(Data.teams.size())).getTeamItem(user.getPlayer()));
                         }
                     });
-                    Coutdown.countdown(Data.countdown);
+                    Countdown.countdown(Data.countdown);
 
                 }else if(Data.state == GameState.Finish){
 
