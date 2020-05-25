@@ -1,8 +1,6 @@
 package de.MangoleHD.IMBedwars;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import de.Iclipse.IMAPI.Util.Dispatching.Dispatcher;
-import de.Iclipse.IMAPI.Util.menu.PopupMenu;
 import de.MangoleHD.IMBedwars.Database.Config;
 import de.MangoleHD.IMBedwars.Database.MapConfig;
 import de.MangoleHD.IMBedwars.Functions.Bed;
@@ -14,16 +12,12 @@ import de.MangoleHD.IMBedwars.Functions.PlayerManagement.User;
 import de.MangoleHD.IMBedwars.Functions.Scheduler;
 import de.MangoleHD.IMBedwars.Functions.Shop.Shop;
 import de.MangoleHD.IMBedwars.Functions.Spawner;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.Hash;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,9 +39,9 @@ public class Data {
     public static int bronzenumber;
     public static int silvernumber;
     public static int goldnumber;
-    public static int perMinuteBronze;
-    public static int perMinuteSilver;
-    public static int perMinuteGold;
+    public static int spawnIntervalBronze;
+    public static int spawnIntervalSilver;
+    public static int spawnIntervalGold;
     public static EntityType shopEntityType;
     public static int minplayers = teamsize + 1;
     public static Date start;

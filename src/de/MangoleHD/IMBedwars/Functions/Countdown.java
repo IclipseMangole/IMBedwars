@@ -2,11 +2,8 @@ package de.MangoleHD.IMBedwars.Functions;
 
 import de.Iclipse.IMAPI.Functions.Vanish;
 import de.MangoleHD.IMBedwars.Data;
-import de.MangoleHD.IMBedwars.Database.MapConfig;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Start;
-import de.MangoleHD.IMBedwars.Functions.Shop.Shop;
 import de.MangoleHD.IMBedwars.Functions.Shop.ShopManager;
-import net.minecraft.server.v1_15_R1.SoundEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
@@ -34,7 +31,6 @@ public class Countdown {
                         dsp.send(player,"countdown.message", "" + seconds, dsp.get("unit.seconds",player));
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP,1,1);
                     });
-                    SpawnerManager.createSpawner();
                     ShopManager.createShops();
                     Data.mapConfig.loadMapLocation();
                 }

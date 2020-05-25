@@ -4,7 +4,6 @@ import de.MangoleHD.IMBedwars.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class Config {
 
     public Config() {
         configFile = new File("plugins/" + Data.instance.getDescription().getName(), "config.yml");
-        configFileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        configFileConfiguration = getConfigConfiguration();
         setStandardConfig();
         loadConfig();
     }
