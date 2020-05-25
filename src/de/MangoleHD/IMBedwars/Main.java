@@ -4,6 +4,7 @@ import de.Iclipse.IMAPI.Database.Server;
 import de.Iclipse.IMAPI.Functions.Servers.State;
 import de.Iclipse.IMAPI.IMAPI;
 import de.Iclipse.IMAPI.Util.Dispatching.Dispatcher;
+import de.MangoleHD.IMBedwars.Commands.GameStates.cmd_start;
 import de.MangoleHD.IMBedwars.Database.Config;
 import de.MangoleHD.IMBedwars.Database.MapConfig;
 import de.MangoleHD.IMBedwars.Functions.GameStates.Finish;
@@ -77,7 +78,7 @@ public class Main extends JavaPlugin {
     }
 
     public void registerCommands(){
-
+        IMAPI.register(new cmd_start(),this);
     }
 
     public void createTables(){
@@ -109,11 +110,11 @@ public class Main extends JavaPlugin {
             deleteFile(new File(Bukkit.getWorldContainer().getAbsolutePath() + "/BedwarsMap"));
         }
 
-        File bedwarsMaps = new File(instance.getDataFolder().getAbsoluteFile().getParentFile().getAbsoluteFile().getParentFile().getAbsolutePath() + "Worlds/BedwarsMaps");
+        File bedwarsMaps = new File("/home/IMNetzwerk/Worlds/BedwarsMaps");
         File[] maps;
         maps = bedwarsMaps.listFiles();
         Random random = new Random();
-        int i = random.nextInt(maps.length - 1);
+        int i = random.nextInt(maps.length);
 
         if(maps[i] != null) {
             File mapFile = maps[i];

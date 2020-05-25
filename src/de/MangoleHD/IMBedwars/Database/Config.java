@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class Config {
@@ -32,15 +33,21 @@ public class Config {
     public void setStandardConfig() {
         FileConfiguration cfg = configFileConfiguration;
         cfg.addDefault("Location.spawn", new Location(Bukkit.getWorld("world"), 0.5, 59, -0.5));
+        try {
+            cfg.save(getConfigFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadConfig() {
         FileConfiguration cfg = configFileConfiguration;
 
+        Data.spawn = cfg.getLocation("Location.spawn");
     }
 
     public void loadConfigLocation(){
-        Data.spawn = configFileConfiguration.getLocation("Location.spawn");
+        Data.spawn.setWorld(Bukkit.getWorld("world"));
     }
 
 }
