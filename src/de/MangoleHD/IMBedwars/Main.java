@@ -1,6 +1,6 @@
 package de.MangoleHD.IMBedwars;
 
-import de.Iclipse.IMAPI.Database.Server;
+import de.Iclipse.IMAPI.Database.ServerManager;
 import de.Iclipse.IMAPI.Functions.Servers.State;
 import de.Iclipse.IMAPI.IMAPI;
 import de.Iclipse.IMAPI.Util.Dispatching.Dispatcher;
@@ -18,7 +18,6 @@ import de.MangoleHD.IMBedwars.Functions.PlayerManagement.UserStats;
 import de.MangoleHD.IMBedwars.Functions.Scheduler;
 import de.MangoleHD.IMBedwars.Functions.Shop.ShopItemList;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -56,7 +55,7 @@ public class Main extends JavaPlugin {
         scheduler.setTask();
         scheduler.setAsynctask();
         TeamManager.createTeams();
-        Server.setState(getServerName(), State.Lobby);
+        ServerManager.setState(getServerName(), State.Lobby);
         ShopItemList.createShopItemList();
         config.loadConfigLocation();
         loadMap();
